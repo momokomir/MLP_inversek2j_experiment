@@ -5,15 +5,15 @@
 int main(int argc, char *argv[])
 {
 
-    unsigned int epochs_between_reports = 1000
-    unsigned int max_epochs = 10000
-    double desired_error = 0.00001
-    double learning_rate = 0.1
+    unsigned int epochs_between_reports = 1000;
+    unsigned int max_epochs = 10000;
+    double desired_error = 0.00001;
+    double learning_rate = 0.1;
     // Topology of MLP
-    const unsigned int num_layers = 3
-    const unsigned int num_input = 2
-    const unsigned int num_neurons_hidden = 8
-    const unsigned int num_output = 2
+    const unsigned int num_layers = 3;
+    const unsigned int num_input = 2;
+    const unsigned int num_neurons_hidden = 8;
+    const unsigned int num_output = 2;
 
     // Create MLP
     struct fann *ann = fann_create_standard(num_layers, num_input, num_neurons_hidden, num_output);
@@ -47,4 +47,4 @@ int main(int argc, char *argv[])
 
 
 
-}
+}//end main

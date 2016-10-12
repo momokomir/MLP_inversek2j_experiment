@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
 
     unsigned int epochs_between_reports = 1000;
-    unsigned int max_epochs = 10000;
+    unsigned int max_epochs = 50000;
     double desired_error = 0.00001;
     double learning_rate = 0.1;
     // Topology of MLP

@@ -28,7 +28,7 @@ ann_train.train_on_file("inversek2j_train.data", max_iterations, iterations_betw
 
 ann_train.save("inversek2j.net")
 
-print "# Train MSW:%s" %(ann_train.get_MSE())
+print "# Train MSE%s" %(ann_train.get_MSE())
 
 
 # test
@@ -37,9 +37,9 @@ ann_test.create_from_file("inversek2j.net")
 testData = ann_test.read_train_from_file("inversek2j_test.data")
 ann_test.test("testData")
 
-print "# Test MSW:%s" %(ann_test.get_MSE())
+print "# Test MSE:%s" %(ann_test.get_MSE())
 
-ann_test.destroy();
-ann_train.destroy();
+ann_test.destroy()
+ann_train.destroy()
 
 

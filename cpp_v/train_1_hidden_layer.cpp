@@ -8,7 +8,6 @@ int main(int argc, char *argv[])
     std::string weakerNet = argv[1];
     std::string trainFile = argv[2];
     std::string testFile = argv[3];
-    std::string fannNet = argv[4];
 
 
     // some arguments

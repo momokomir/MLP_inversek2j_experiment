@@ -1,7 +1,7 @@
 /* train_1_hidden_layer.cpp
  *  Train a NN with only one hidden layer use "FANN" library.
  *  usage:
- *       ./trian_1_hidden_layer net_1 inversek2j_train.data 
+ *       ./trian_1_hidden_layer net_1 net_1_inversek2j_train.data net_1_inversek2j_test.data  
  *
  * Qiaojing
  * 2016.10.19
@@ -12,18 +12,18 @@
 # include "fann.h"
 # include <iostream>
 # include <floatfann.h>
-# include <fstream>
-# include <cmath> /* abs */
 
 int main(int argc, char *argv[])
 {
-    // ./train_1_hidden_layer net_1 inversek2j_train.data 
+    // ./trian_1_hidden_layer net_1 net_1_inversek2j_train.data net_1_inversek2j_test.data  
     std::string weakerNet = argv[1];
     std::string trainFile = argv[2];
+    std::string testFile = argv[3];
+
 
     // some arguments
     unsigned int epochs_between_reports = 1000;
-    unsigned int max_epochs = 1000;
+    unsigned int max_epochs = 10000;
     double desired_error = 0.00001;
     double learning_rate = 0.1;
     // Topology of MLP
@@ -45,33 +45,24 @@ int main(int argc, char *argv[])
 
     // Training
     fann_train_on_data(ann, train_data, max_epochs, epochs_between_reports, desired_error);
-    std::string fannSave =  weakerNet + std::string("_inversek2j.net");
+    std::string fannSave = weakerNet + std::string("_inversek2j.net");
     fann_save(ann, fannSave.c_str());
     std::cout << "# Train MSE: " << fann_get_MSE(ann) << std::endl;
 
-
-    // Caculate the error of each sample and write them to the error file: net_1_error.txt
-    std::string errorFile = weakerNet + std::string("_error.txt");
-    std::ofstream f1("./error/"+ errorFile);
-    if (!f1){
-        std::cout << "Failed to write file: " << errorFile << std::endl;
-        return 0;
-    }
-    
-    unsigned int sampleNum = fann_length_train_data(train_data);// 用fann的函数读trainFile的样本个数
-
-    std::cout << "# sampleNum: " << sampleNum << std::endl;
-    
-    for (int i=0; i<sampleNum; i++){
-       // test
-       // std::cout << *fann_get_train_input(train_data,i) << "<-input   output->" << *fann_get_train_output(train_data,i) << std::endl;
-       f1 << std::abs(*fann_run(ann, fann_get_train_input(train_data,i)) - *fann_get_train_output(train_data,i)) << std::endl;
-    }
-
-    f1.close();
+    // Testing
+    struct fann_train_data *test_data = fann_read_train_from_file(testFile.c_str());
+    fann_reset_MSE(ann);
+    fann_test_data(ann, test_data);
+    std::cout <<  "# Test MSE: " << fann_get_MSE(ann) << std::endl;
 
     // Destroy
+    fann_destroy_train(test_data);
     fann_destroy(ann);
-    fann_destroy_train(train_data);
 
-} //end main
+
+
+
+
+
+
+}//end main

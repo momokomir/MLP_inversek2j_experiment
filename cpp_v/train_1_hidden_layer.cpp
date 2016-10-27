@@ -23,13 +23,13 @@ int main(int argc, char *argv[])
 
     // some arguments
     unsigned int epochs_between_reports = 1000;
-    unsigned int max_epochs = 1000;
+    unsigned int max_epochs = 50000;
     double desired_error = 0.00001;
     double learning_rate = 0.1;
     // Topology of MLP
     const unsigned int num_layers = 3;
     const unsigned int num_input = 2;
-    const unsigned int num_neurons_hidden = 4;
+    const unsigned int num_neurons_hidden = 2;
     const unsigned int num_output = 2;
 
     // Create MLP

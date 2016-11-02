@@ -22,7 +22,7 @@ def hs_func():
         else:
             return 0
 
-    return np.frompyfunc(hs, 1, 1)œœqqœ
+    return np.frompyfunc(hs, 1, 1)
 
 
 def exp_func(alpha):

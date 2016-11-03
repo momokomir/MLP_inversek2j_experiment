@@ -1,7 +1,7 @@
 /* train_1_hidden_layer.cpp
  *  Train a NN with only one hidden layer use "FANN" library.
  *  usage:
- *       ./trian_1_hidden_layer net_1 inversek2j_train.data 
+ *      ./train_1_hidden_layer net_1 ./train.data/net_1_inversek2j_train.data 10000 2 8 2
  *
  * Qiaojing
  * 2016.10.19
@@ -18,7 +18,7 @@
 
 int main(int argc, char *argv[])
 {
-    // ./train_1_hidden_layer net_1 inversek2j
+    // ./train_1_hidden_layer net_1 ./train.data/net_1_inversek2j_train.data 10000 2 8 2
     /*
      argv[1]:net_1
      argv[2]:inversek2j_train.data
@@ -67,6 +67,18 @@ int main(int argc, char *argv[])
         std::cout << "Failed to write file: " << errorFile << std::endl;
         return 0;
     }
+    // f2 to save the train_out
+    std::ofstream f2("./error/train_out");
+    if (!f2){
+        std::cout << "Failed to write file: " << errorFile << std::endl;
+        return 0;
+    }
+    // f3 to save the orig_out
+    std::ofstream f3("./error/orig_out");
+    if (!f3){
+        std::cout << "Failed to write file: " << errorFile << std::endl;
+        return 0;
+    }
     
     unsigned int sampleNum = fann_length_train_data(train_data);// 用fann的函数读trainFile的样本个数
 
@@ -74,11 +86,25 @@ int main(int argc, char *argv[])
     
     for (int i=0; i<sampleNum; i++){
        // write the error file
-       // std::cout << *fann_get_train_input(train_data,i) << "<-input   output->" << *fann_get_train_output(train_data,i) << std::endl;
+       //
+
+       //TODO: why f1, f2, f3 just has 7000 samples?
+       //      the correct answer should be 7000*2
        f1 << std::abs(*fann_run(ann, fann_get_train_input(train_data,i)) - *fann_get_train_output(train_data,i)) << std::endl;
+
+       f2 << *fann_run(ann, fann_get_train_input(train_data,i)) << std::endl;
+//       if(i == 1){
+//            std::cout << *fann_run(ann, fann_get_train_input(train_data,i)) << std::endl;
+//       }
+       f3 << *fann_get_train_output(train_data,i) << std::endl;
+//       if ( i == 1){
+//            std::cout << *fann_get_train_output(train_data,i) << std::endl;
+//       }
     }
 
     f1.close();
+    f2.close();
+    f3.close();
 
     // Destroy
     fann_destroy(ann);

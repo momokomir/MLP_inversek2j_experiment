@@ -25,6 +25,8 @@ ann_train.create_sparse_array(connection_rate, (num_input, num_hidden, num_outpu
 ann_train.set_learning_rate(learning_rate)
 ann_train.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
 ann_train.train_on_file("inversek2j_train.data", max_iterations, iterations_between_reports, desired_error)
+ann_train.get_MSE()
+ann.run()
 
 ann_train.save("inversek2j.net")
 

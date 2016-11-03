@@ -14,23 +14,33 @@
 # include <floatfann.h>
 # include <fstream>
 # include <cmath> /* abs */
+# include <stdlib.h> /* strtol */
 
 int main(int argc, char *argv[])
 {
-    // ./train_1_hidden_layer net_1 inversek2j_train.data 
+    // ./train_1_hidden_layer net_1 inversek2j
+    /*
+     argv[1]:net_1
+     argv[2]:inversek2j_train.data
+     argv[3]:10000  max_epochs
+     argv[4]:2 num_input
+     argv[5]:2 num_neurons_hidden
+     argv[6]:2 num_output
+
+    */
     std::string weakerNet = argv[1];
     std::string trainFile = argv[2];
 
     // some arguments
-    unsigned int epochs_between_reports = 1000;
-    unsigned int max_epochs = 50000;
+    unsigned int epochs_between_reports = 10000;
+    unsigned int max_epochs = strtol(argv[3], NULL, 10);
     double desired_error = 0.00001;
     double learning_rate = 0.1;
     // Topology of MLP
     const unsigned int num_layers = 3;
-    const unsigned int num_input = 2;
-    const unsigned int num_neurons_hidden = 2;
-    const unsigned int num_output = 2;
+    const unsigned int num_input = strtol(argv[4], NULL, 10);
+    const unsigned int num_neurons_hidden = strtol(argv[5], NULL, 10);
+    const unsigned int num_output = strtol(argv[6], NULL, 10);
 
     // Create MLP
     struct fann *ann = fann_create_standard(num_layers, num_input, num_neurons_hidden, num_output);
@@ -60,10 +70,10 @@ int main(int argc, char *argv[])
     
     unsigned int sampleNum = fann_length_train_data(train_data);// 用fann的函数读trainFile的样本个数
 
-    std::cout << "# sampleNum: " << sampleNum << std::endl;
+    //std::cout << "# sampleNum: " << sampleNum << std::endl;
     
     for (int i=0; i<sampleNum; i++){
-       // test
+       // write the error file
        // std::cout << *fann_get_train_input(train_data,i) << "<-input   output->" << *fann_get_train_output(train_data,i) << std::endl;
        f1 << std::abs(*fann_run(ann, fann_get_train_input(train_data,i)) - *fann_get_train_output(train_data,i)) << std::endl;
     }
